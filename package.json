@@ -1,0 +1,18 @@
+{
+  "name": "chai_or_backend",
+  "version": "1.0.0",
+  "description": "backend project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "kaushal",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
