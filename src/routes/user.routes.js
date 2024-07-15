@@ -7,7 +7,7 @@ const router = Router()
 
 
 router.route("/rejister").post(
-  upload.fields(
+  upload.fields([
     {
       name:"avtar",
       maxCount:1
@@ -16,7 +16,7 @@ router.route("/rejister").post(
       name:"coverImage",
       maxCount:1
     }
-  ),
+ ]),
   rejisterUser
 )
 
