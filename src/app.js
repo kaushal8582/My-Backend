@@ -4,6 +4,7 @@ import  cors from "cors"
 
 const app = express()
 
+// esko read karna hai
 app.use(cors({
   origin:process.env.CORS_ORIGIN,
   credentials:true

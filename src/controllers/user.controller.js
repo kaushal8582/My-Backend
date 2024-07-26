@@ -340,85 +340,85 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       }
     },
     {
-      $addFields:{
-        subscribersCount:{
-          $size:"$subscribers" // subscribers ke pahle $ esiliye ki eb vo field ban gai hai lookup hone ke badd
+      $addFields: {
+        subscribersCount: {
+          $size: "$subscribers" // subscribers ke pahle $ esiliye ki eb vo field ban gai hai lookup hone ke badd
         },
-        channelSubscribedToCount:{
-          $size:"$subscribedTo"
+        channelSubscribedToCount: {
+          $size: "$subscribedTo"
         },
-        isSubscribed:{
-          $cond:{
-            if:{$in:[req.user?._id, "$subscribers.subscriber" ]},
-            then:true,
-            else:false
+        isSubscribed: {
+          $cond: {
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+            then: true,
+            else: false
           }
         }
       }
-    },{
-      $project:{
-        username:1,
-        email:1,
-        fullName:1,
-        avtar:1,
-        coverImage:1,
-        isSubscribed:1,
-        subscribersCount:1,
-        channelSubscribedToCount:1,
+    }, {
+      $project: {
+        username: 1,
+        email: 1,
+        fullName: 1,
+        avtar: 1,
+        coverImage: 1,
+        isSubscribed: 1,
+        subscribersCount: 1,
+        channelSubscribedToCount: 1,
       }
     }
   ])
 
   console.log("channel : ", channel);
 
-  if(!channel.length >0){
-    throw new ApiError(404,"Channel does not found");
+  if (!channel.length > 0) {
+    throw new ApiError(404, "Channel does not found");
   }
 
   return res
-  .status(200)
-  .json(
-    new ApiResponse(200,channel[0],"User channel fetched successfully") 
-  )
+    .status(200)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully")
+    )
 
 
 })
 
-const getWatchHistory = asyncHandler(async(req,res)=>{
+const getWatchHistory = asyncHandler(async (req, res) => {
   const user = await User.aggregate([
     {
-      $match:{
-        _id:new mongoose.Types.ObjectId(req.user._id)
+      $match: {
+        _id: new mongoose.Types.ObjectId(req.user._id)
       }
     },
     {
-      $lookup:{
-        from:"Videos",
-        localField:"watchHistory",
-        foreignField:"_id",
-        as:"watchHistory",
-        pipeline:[
+      $lookup: {
+        from: "Videos",
+        localField: "watchHistory",
+        foreignField: "_id",
+        as: "watchHistory",
+        pipeline: [
           {
-            $lookup:{
-              from:"users",
-              localField:"owner",
-              foreignField:"_id",
-              as:"owner",
-              pipeline:[
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+              pipeline: [
                 {
-                  $project:{
-                    fullName:1,
-                    username:1,
-                    avtar:1,
+                  $project: {
+                    fullName: 1,
+                    username: 1,
+                    avtar: 1,
                   }
                 }
               ]
             }
           },
           {
-            $addFields:{
-              owner:{
-                $first:"$owner"
+            $addFields: {
+              owner: {
+                $first: "$owner"
               }
             }
           }
@@ -428,13 +428,13 @@ const getWatchHistory = asyncHandler(async(req,res)=>{
   ])
 
   return res
-  .status(200)
-  .json(
-    200,
-    user[0].watchHistory,
-    "watch history fetched successfully"
-  )
-  
+    .status(200)
+    .json(
+      200,
+      user,
+      "watch history fetched successfully"
+    )
+
 })
 
 
@@ -450,4 +450,5 @@ export {
   getUserChannelProfile,
   getWatchHistory,
   updateAccountDetails,
+  refreshAccessToken
 }

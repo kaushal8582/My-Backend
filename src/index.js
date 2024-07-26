@@ -10,7 +10,6 @@ dotenv.config(
 
 connectDB()
 .then(()=>{
-  
   app.listen(process.env.PORT,()=>{
     console.log("Server is starded at Port : ",process.env.PORT);
   })
